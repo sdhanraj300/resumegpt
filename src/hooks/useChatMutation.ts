@@ -1,8 +1,9 @@
+import { getApiUrl } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 export function useChatMutation() {
   return useMutation({
     mutationFn: async (message: string) => {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(getApiUrl('/api/chat'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

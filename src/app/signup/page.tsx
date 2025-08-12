@@ -32,6 +32,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import { getApiUrl } from '@/lib/utils';
 // Zod schema remains the same
 const formSchema = z
     .object({
@@ -65,7 +66,7 @@ export default function Signup() {
     // This mutation now calls YOUR OWN /api/register endpoint
     const { mutate: registerUser, isPending } = useMutation({
         mutationFn: async ({ name, email, password }: SignUpFormValues) => {
-            const response = await fetch('/api/register', {
+            const response = await fetch(getApiUrl('/api/register'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password }),

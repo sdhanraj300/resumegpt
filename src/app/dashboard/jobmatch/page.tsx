@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Loader2 } from 'lucide-react'
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import { getApiUrl } from '@/lib/utils'
 
 export default function JobMatch() {
     const router = useRouter();
@@ -24,7 +25,7 @@ export default function JobMatch() {
             let response: Response
 
             if (type === 'text') {
-                response = await fetch('/api/job', {
+                response = await fetch(getApiUrl('/api/job'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export default function JobMatch() {
                     body: JSON.stringify({ text: input }),
                 })
             } else {
-                response = await fetch('/api/job', {
+                response = await fetch(getApiUrl('/api/job'), {
                     method: 'POST',
                     body: input as FormData,
                 })

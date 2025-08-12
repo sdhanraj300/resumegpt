@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Briefcase, FileScan } from 'lucide-react';
+import { getApiUrl } from '@/lib/utils';
 
 export default async function Dashboard() {
   // Protect the route and get the session
@@ -16,7 +17,7 @@ export default async function Dashboard() {
 
   // Get the user's latest resume via API
   const headersList = await headers();
-  const response = await fetch(`/api/resume`, {
+  const response = await fetch(getApiUrl(`/api/resume`), {
     method: 'GET',
     headers: {
       'Cookie': headersList.get('cookie') || '',

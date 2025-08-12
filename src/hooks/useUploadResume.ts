@@ -1,3 +1,4 @@
+import { getApiUrl } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query'
 export function useUploadResume() {
   return useMutation({
@@ -5,7 +6,7 @@ export function useUploadResume() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/resume', {
+      const response = await fetch(getApiUrl('/api/resume'), {
         method: 'POST',
         body: formData,
       });

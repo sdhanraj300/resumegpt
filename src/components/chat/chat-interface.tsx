@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn, getApiUrl } from '@/lib/utils';
 import { PromptInput, PromptInputAction, PromptInputActions, PromptInputTextarea } from '../ui/prompt-input';
 import { Message, MessageAvatar, MessageContent } from '../ui/message';
 import { PromptSuggestion } from '../ui/prompt-suggestion';
@@ -52,7 +52,7 @@ export function ChatInterface({ resumeId, userId, resumeTitle }: ChatInterfacePr
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(getApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

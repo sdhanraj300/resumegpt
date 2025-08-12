@@ -9,6 +9,7 @@ import { Loader2, UploadCloud, File as FileIcon, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import { getApiUrl } from '@/lib/utils';
 
 export default function UploadResumePage() {
     const [file, setFile] = useState<File | null>(null);
@@ -42,7 +43,7 @@ export default function UploadResumePage() {
         formData.append('file', file);
 
         try {
-            const response = await fetch('/api/resume', {
+            const response = await fetch(getApiUrl('/api/resume'), {
                 method: 'POST',
                 body: formData,
             });

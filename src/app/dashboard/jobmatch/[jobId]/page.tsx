@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
+import { getApiUrl } from '@/lib/utils';
 
 // Define a type for our analysis data for better type safety
 interface AnalysisReport {
@@ -68,7 +69,7 @@ export default function JobMatchPage() {
                 try {
                     // NOTE: Your API should be updated to accept BOTH resumeId and jobId
                     // For now, assuming it takes jobId and finds the latest resume
-                    const response = await fetch('/api/job-analyze', { // Assuming this is your analysis endpoint
+                    const response = await fetch(getApiUrl('/api/job-analyze'), { // Assuming this is your analysis endpoint
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
