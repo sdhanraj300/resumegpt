@@ -89,9 +89,9 @@ export default function JobMatchPage() {
                     // You might need to adjust your API to return jobTitle as well
                     setAnalysis(data.jobAndResume);
 
-                } catch (err: any) {
+                } catch (err) {
                     console.error('Error fetching job data:', err);
-                    setError(err.message || 'Failed to load job data');
+                    setError('Failed to load job data');
                 } finally {
                     setIsLoading(false);
                 }

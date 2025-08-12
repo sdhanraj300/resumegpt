@@ -10,6 +10,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { Document } from '@langchain/core/documents';
 import { getModel } from '@/lib/gemini';
 import { getEmbeddings, getPineconeClient } from '@/lib/pinecone';
+import Error from 'next/error';
 
 export const runtime = 'nodejs';
 
@@ -147,11 +148,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('[CHAT_API_ERROR]', error);
     return new Response(
       JSON.stringify({
-        message: `An unexpected error occurred: ${error.message || 'Please try again later.'}`
+        message: `An unexpected error occurred: ${error || 'Please try again later.'}`
       }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );

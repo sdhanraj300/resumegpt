@@ -25,7 +25,7 @@ export default function Home() {
           </div>
           <Button
             variant="outline"
-            onClick={() => window.open('https://github.com/your-repo', '_blank')}
+            onClick={() => window.open('https://github.com/sdhanraj300/resumegpt', '_blank')}
             className="hidden sm:inline-flex"
           >
             View on GitHub
@@ -39,10 +39,11 @@ export default function Home() {
             Powered by Gemini
           </span>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6 leading-tight">
-            Land Your Dream Job with an AI-Powered Resume
+            {`Land Your Dream Job with an AI-Powered Resume`}
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Stop guessing. Get instant, data-driven feedback on your resume against any job description. Optimize for ATS and impress recruiters.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">{
+            `Stop guessing. Get instant, data-driven feedback on your resume against any job description. Optimize for ATS and impress recruiters.`
+          }
           </p>
 
           <div className="flex justify-center">
@@ -66,7 +67,7 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold">How It Works</h3>
-            <p className="text-muted-foreground mt-2">A simple, powerful process to get you hired faster.</p>
+            <p className="text-muted-foreground mt-2">{`A simple, powerful process to get you hired faster.`}</p>
           </div>
           {/* This "How it Works" section remains relevant to the overall app flow */}
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -76,16 +77,16 @@ export default function Home() {
               </div>
               <h4 className="text-xl font-semibold mb-2">1. Upload Your Resume</h4>
               <p className="text-muted-foreground">
-                Securely upload your current resume in PDF format after signing up. We'll link it to your account.
+                {`Securely upload your current resume in PDF format after signing up. We'll link it to your account.`}
               </p>
             </div>
             <div className="text-center p-6 bg-card border rounded-lg shadow-sm hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-center h-16 w-16 bg-primary/10 rounded-full mx-auto mb-4">
                 <ScanSearch className="w-8 h-8 text-primary" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">2. Provide Job Details</h4>
+              <h4 className="text-xl font-semibold mb-2">{`2. Provide Job Details`}</h4>
               <p className="text-muted-foreground">
-                Paste the text from the job description you're targeting. Our AI reads every detail and requirement.
+                {`Paste the text from the job description you're targeting. Our AI reads every detail and requirement.`}
               </p>
             </div>
             <div className="text-center p-6 bg-card border rounded-lg shadow-sm hover:shadow-lg transition-shadow">
@@ -94,7 +95,7 @@ export default function Home() {
               </div>
               <h4 className="text-xl font-semibold mb-2">3. Get AI Feedback</h4>
               <p className="text-muted-foreground">
-                Receive a detailed analysis, match score, and actionable suggestions to tailor your resume perfectly.
+                {`Receive a detailed analysis, match score, and actionable suggestions to tailor your resume perfectly.`}
               </p>
             </div>
           </div>

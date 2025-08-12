@@ -60,8 +60,8 @@ export default function UploadResumePage() {
             // Redirect DIRECTLY to the analysis page for the new resume
             router.push(`/dashboard/analyze/${data.resumeId}`);
 
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error) {
+            toast.error(error as string);
         } finally {
             setIsUploading(false);
         }
