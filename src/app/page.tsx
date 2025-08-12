@@ -1,102 +1,112 @@
-import Image from "next/image";
+// src/app/page.tsx
+'use client';
+
+import { BotMessageSquare, ScanSearch, FileText, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { useRouter } from 'next/navigation'; // Import the router hook
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter(); // Initialize the router
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // All state and handlers for file upload have been removed.
+
+  const handleGetStarted = () => {
+    router.push('/signup'); // Navigate to your signup page
+  };
+
+  return (
+    <div className="bg-background min-h-screen text-foreground">
+      <header className="absolute top-0 left-0 w-full z-10">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <BotMessageSquare className="w-8 h-8 text-primary" />
+            <h1 className="text-2xl font-bold tracking-tight">ResumeGPT</h1>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => window.open('https://github.com/your-repo', '_blank')}
+            className="hidden sm:inline-flex"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            View on GitHub
+          </Button>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-6 pt-32 pb-16 text-center">
+        <div className="max-w-3xl mx-auto">
+          <span className="inline-flex items-center justify-center px-4 py-1 text-sm font-semibold tracking-wider text-primary bg-primary/10 rounded-full mb-4">
+            Powered by Gemini
+          </span>
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6 leading-tight">
+            Land Your Dream Job with an AI-Powered Resume
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            Stop guessing. Get instant, data-driven feedback on your resume against any job description. Optimize for ATS and impress recruiters.
+          </p>
+
+          <div className="flex justify-center">
+            {/* The button is now simplified and calls the navigation handler */}
+            <Button
+              onClick={handleGetStarted}
+              size="lg"
+              className="rounded-full shadow-lg transform hover:scale-105 transition-transform"
+            >
+              <ArrowRight className="w-5 h-5 mr-3" />
+              Get Started
+            </Button>
+          </div>
+
+          {/* Helper text updated to reflect the new action */}
+          <p className="text-sm text-muted-foreground mt-4">Create an account to get started.</p>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      <section className="bg-secondary/50 py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold">How It Works</h3>
+            <p className="text-muted-foreground mt-2">A simple, powerful process to get you hired faster.</p>
+          </div>
+          {/* This "How it Works" section remains relevant to the overall app flow */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center p-6 bg-card border rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center h-16 w-16 bg-primary/10 rounded-full mx-auto mb-4">
+                <FileText className="w-8 h-8 text-primary" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">1. Upload Your Resume</h4>
+              <p className="text-muted-foreground">
+                Securely upload your current resume in PDF format after signing up. We'll link it to your account.
+              </p>
+            </div>
+            <div className="text-center p-6 bg-card border rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center h-16 w-16 bg-primary/10 rounded-full mx-auto mb-4">
+                <ScanSearch className="w-8 h-8 text-primary" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">2. Provide Job Details</h4>
+              <p className="text-muted-foreground">
+                Paste the text from the job description you're targeting. Our AI reads every detail and requirement.
+              </p>
+            </div>
+            <div className="text-center p-6 bg-card border rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center h-16 w-16 bg-primary/10 rounded-full mx-auto mb-4">
+                <BotMessageSquare className="w-8 h-8 text-primary" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">3. Get AI Feedback</h4>
+              <p className="text-muted-foreground">
+                Receive a detailed analysis, match score, and actionable suggestions to tailor your resume perfectly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t">
+        <div className="container mx-auto px-6 py-6 text-center text-muted-foreground">
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} ResumeGPT. Built by [Your Name].
+          </p>
+        </div>
       </footer>
     </div>
   );
