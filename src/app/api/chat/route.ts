@@ -10,7 +10,6 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { Document } from '@langchain/core/documents';
 import { getModel } from '@/lib/gemini';
 import { getEmbeddings, getPineconeClient } from '@/lib/pinecone';
-import Error from 'next/error';
 
 export const runtime = 'nodejs';
 
