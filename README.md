@@ -65,7 +65,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/resume-gpt.git](https://github.com/your-username/resume-gpt.git)
+    git clone [https://github.com/sdhanraj300/resumegpt.git](https://github.com/sdhanraj300/resumegpt.git)
     cd resume-gpt
     ```
 
