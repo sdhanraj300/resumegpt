@@ -8,10 +8,6 @@ import { PromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-// Simple in-memory cache for analytics results
-const analyticsCache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
 // Schema for structured analytics output
 const analyticsSchema = z.object({
   atsScore: z
@@ -46,6 +42,16 @@ const analyticsSchema = z.object({
       .describe("Priority improvement recommendations"),
   }),
 });
+
+// Type inference from Zod schema
+type AnalyticsData = z.infer<typeof analyticsSchema>;
+
+// Simple in-memory cache for analytics results
+const analyticsCache = new Map<
+  string,
+  { data: AnalyticsData; timestamp: number }
+>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export async function GET() {
   try {
