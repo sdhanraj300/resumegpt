@@ -5,7 +5,7 @@ import { authOptions } from '@/lib/auth';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Briefcase, FileScan } from 'lucide-react';
+import { ArrowRight, Briefcase, FileScan, BarChart3 } from 'lucide-react';
 import { getApiUrl } from '@/lib/utils';
 
 export default async function Dashboard() {
@@ -49,8 +49,8 @@ export default async function Dashboard() {
         </p>
       </div>
 
-      {/* Two-column grid for the tool sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Three-column grid for the tool sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Analyze Resume Section */}
         <Link href={`/dashboard/analyze/${resumeId}`} className="group block">
           <Card className="h-full hover:border-primary transition-colors hover:shadow-lg">
@@ -78,6 +78,22 @@ export default async function Dashboard() {
               <CardTitle className="text-2xl">Job Matcher</CardTitle>
               <CardDescription>
                 Discover job opportunities that perfectly match your skills and experience profile.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        {/* Analytics Section */}
+        <Link href={`/dashboard/analytics`} className="group block">
+          <Card className="hover:border-primary transition-colors hover:shadow-lg">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <BarChart3 className="h-10 w-10 text-blue-600 mb-4" />
+                <ArrowRight className="h-6 w-6 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+              </div>
+              <CardTitle className="text-2xl">Resume Analytics</CardTitle>
+              <CardDescription>
+                Get detailed insights on ATS compatibility, skills analysis, and improvement recommendations.
               </CardDescription>
             </CardHeader>
           </Card>

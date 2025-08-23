@@ -105,7 +105,7 @@ export default function Home() {
       <footer className="border-t">
         <div className="container mx-auto px-6 py-6 text-center text-muted-foreground">
           <p className="text-sm">
-            &copy; {new Date().getFullYear()} ResumeGPT. Built by [Your Name].
+            &copy; {new Date().getFullYear()} ResumeGPT. Built by Dhanraj💖.
           </p>
         </div>
       </footer>
