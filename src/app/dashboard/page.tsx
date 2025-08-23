@@ -17,7 +17,7 @@ export default async function Dashboard() {
 
   // Get the user's latest resume via API
   const headersList = await headers();
-  const response = await fetch(getApiUrl(`/api/resume`), {
+  const response = await fetch(getApiUrl(`/api/resume?single=true`), {
     method: 'GET',
     headers: {
       'Cookie': headersList.get('cookie') || '',

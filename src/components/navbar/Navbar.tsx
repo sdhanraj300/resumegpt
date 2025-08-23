@@ -21,6 +21,12 @@ export const Navbar = () => {
                         >
                             Dashboard
                         </Link>
+                        <Link
+                            href="/profile"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            Profile
+                        </Link>
                         {/* Add more static links here if you want */}
                     </nav>
                 </div>
