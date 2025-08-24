@@ -42,10 +42,18 @@ interface MockSession {
     createdAt: string;
 }
 
+interface Resume {
+    id: string;
+    userId: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export default function InterviewPrepPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const [userResume, setUserResume] = useState<any>(null);
+    const [userResume, setUserResume] = useState<Resume>();
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
     const [mockSessions, setMockSessions] = useState<MockSession[]>([]);

@@ -4,6 +4,13 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getModel } from "@/lib/gemini";
 
+interface question {
+  question: string;
+  category: string;
+  difficulty: string;
+  tips: string[];
+}
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -102,7 +109,7 @@ Make the questions specific to the role and company type. If resume content is p
     }
 
     // Validate and clean the questions
-    const validatedQuestions = questions.map((q: any, index: number) => ({
+    const validatedQuestions = questions.map((q: question, index: number) => ({
       id: `q_${Date.now()}_${index}`,
       question: q.question || "Question not available",
       category: q.category || "general",

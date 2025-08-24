@@ -182,7 +182,7 @@ export function InterviewPractice({
                         </div>
                         <CardTitle className="text-2xl">Interview Session Completed!</CardTitle>
                         <CardDescription>
-                            Great job! Here's your performance summary for {role} at {company}
+                            Great job! Here&apos;s your performance summary for {role} at {company}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
