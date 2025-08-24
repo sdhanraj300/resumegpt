@@ -42,13 +42,25 @@ interface AnalyticsData {
     };
 }
 
+interface Resume {
+    id: number;
+    title: string;
+    createdAt: string;
+}
+
 export default function AnalyticsPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+    const [userResume, setUserResume] = useState<Resume | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [hasFetched, setHasFetched] = useState(false);
+
+    useEffect(() => {
+        // For single resume, we don't need URL params for resume selection
+        // Just proceed with fetching the user's resume
+    }, []);
 
     useEffect(() => {
         // Only run if we have a user ID and haven't fetched yet
@@ -59,34 +71,71 @@ export default function AnalyticsPage() {
             return;
         }
 
-        if (hasFetched) return; // Prevent multiple calls
-
-        const fetchAnalytics = async () => {
+        // Fetch user's single resume
+        const fetchResume = async () => {
             try {
-                setIsLoading(true);
-                const response = await fetch('/api/analytics/comprehensive', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const response = await fetch('/api/resume');
+                if (response.ok) {
+                    const data = await response.json();
+                    const userResumes = data.resumes || [];
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch analytics');
+                    if (userResumes.length > 0) {
+                        setUserResume(userResumes[0]); // Get the single resume
+                        // Automatically fetch analytics for this resume
+                        fetchAnalytics(userResumes[0].id);
+                    } else {
+                        setError('No resume found. Please upload a resume first.');
+                        setIsLoading(false);
+                    }
                 }
-
-                const data = await response.json();
-                setAnalytics(data);
-                setHasFetched(true); // Mark as fetched
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Unknown error occurred');
-            } finally {
+                console.error('Error fetching resume:', err);
+                setError('Failed to load resume');
                 setIsLoading(false);
             }
         };
 
-        fetchAnalytics();
-    }, [session?.user?.id, status, router, hasFetched]);
+        fetchResume();
+    }, [session?.user?.id, status, router]);
+
+    // Function to fetch analytics for a specific resume
+    const fetchAnalytics = async (resumeId: number) => {
+        if (hasFetched) return;
+
+        try {
+            setIsLoading(true);
+            const url = `/api/analytics/comprehensive?resumeId=${resumeId}`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch analytics');
+            }
+
+            const data = await response.json();
+            setAnalytics(data);
+            setHasFetched(true);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Unknown error occurred');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleRefresh = () => {
+        if (userResume) {
+            setHasFetched(false);
+            setAnalytics(null);
+            setIsLoading(true);
+            setError(null);
+            fetchAnalytics(userResume.id);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -141,19 +190,21 @@ export default function AnalyticsPage() {
                     <p className="text-lg text-muted-foreground">
                         Comprehensive analysis of your resume performance and optimization opportunities
                     </p>
+                    {userResume && (
+                        <div className="text-sm text-muted-foreground">
+                            Analyzing: <span className="font-medium">{userResume.title}</span>
+                        </div>
+                    )}
                 </div>
-                <Button
-                    variant="outline"
-                    onClick={() => {
-                        setHasFetched(false);
-                        setAnalytics(null);
-                        setIsLoading(true);
-                        setError(null);
-                    }}
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Analyzing..." : "Refresh Analysis"}
-                </Button>
+                <div className="flex items-center gap-4">
+                    <Button
+                        variant="outline"
+                        onClick={handleRefresh}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Analyzing..." : "Refresh Analysis"}
+                    </Button>
+                </div>
             </div>
 
             {/* Overall Score Cards */}

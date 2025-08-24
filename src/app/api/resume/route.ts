@@ -27,6 +27,26 @@ export async function POST(request: Request) {
   const userId = session.user.id;
 
   try {
+    // Check if user already has a resume
+    const existingResume = await db.resume.findFirst({
+      where: { userId },
+      select: { id: true, title: true },
+    });
+
+    if (existingResume) {
+      return NextResponse.json(
+        {
+          error:
+            "You already have a resume uploaded. Please delete your current resume before uploading a new one.",
+          existingResume: {
+            id: existingResume.id,
+            title: existingResume.title,
+          },
+        },
+        { status: 409 } // Conflict status code
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
 

@@ -53,7 +53,7 @@ const analyticsCache = new Map<
 >();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -63,20 +63,37 @@ export async function GET() {
 
     const userId = session.user.id;
 
-    // Check cache first
-    const cacheKey = `analytics_${userId}`;
+    // Get resumeId from query parameters
+    const url = new URL(request.url);
+    const resumeId = url.searchParams.get("resumeId");
+
+    // Create cache key based on user and specific resume
+    const cacheKey = resumeId
+      ? `analytics_${userId}_${resumeId}`
+      : `analytics_${userId}_latest`;
     const cached = analyticsCache.get(cacheKey);
 
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      console.log("[ANALYTICS] Returning cached result for user:", userId);
+      console.log(
+        `[ANALYTICS] Returning cached result for user ${userId}, resume: ${
+          resumeId || "latest"
+        }`
+      );
       return NextResponse.json(cached.data);
     }
 
-    // Get the user's most recent resume
-    const resume = await db.resume.findFirst({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
-    });
+    // Get the specified resume or the most recent one
+    const resume = resumeId
+      ? await db.resume.findFirst({
+          where: {
+            id: parseInt(resumeId),
+            userId, // Ensure user owns this resume
+          },
+        })
+      : await db.resume.findFirst({
+          where: { userId },
+          orderBy: { createdAt: "desc" },
+        });
 
     if (!resume) {
       return NextResponse.json(

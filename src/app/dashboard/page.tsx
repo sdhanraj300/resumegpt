@@ -5,7 +5,7 @@ import { authOptions } from '@/lib/auth';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Briefcase, FileScan, BarChart3 } from 'lucide-react';
+import { ArrowRight, Briefcase, FileScan, BarChart3, MessageSquare } from 'lucide-react';
 import { getApiUrl } from '@/lib/utils';
 
 export default async function Dashboard() {
@@ -49,8 +49,8 @@ export default async function Dashboard() {
         </p>
       </div>
 
-      {/* Three-column grid for the tool sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Four-column grid for the tool sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Analyze Resume Section */}
         <Link href={`/dashboard/analyze/${resumeId}`} className="group block">
           <Card className="h-full hover:border-primary transition-colors hover:shadow-lg">
@@ -94,6 +94,22 @@ export default async function Dashboard() {
               <CardTitle className="text-2xl">Resume Analytics</CardTitle>
               <CardDescription>
                 Get detailed insights on ATS compatibility, skills analysis, and improvement recommendations.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        {/* Interview Preparation Section */}
+        <Link href={`/dashboard/interview-prep`} className="group block">
+          <Card className="hover:border-primary transition-colors hover:shadow-lg">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <MessageSquare className="h-10 w-10 text-green-600 mb-4" />
+                <ArrowRight className="h-6 w-6 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+              </div>
+              <CardTitle className="text-2xl">Interview Prep</CardTitle>
+              <CardDescription>
+                Practice with AI-generated questions tailored to your resume and target role.
               </CardDescription>
             </CardHeader>
           </Card>

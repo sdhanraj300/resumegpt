@@ -28,7 +28,8 @@ import {
     Briefcase,
     GraduationCap,
     Star,
-    Trash2
+    Trash2,
+    BarChart3
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,9 +62,8 @@ export default function ProfilePage() {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [resumes, setResumes] = useState<Resume[]>([]);
+    const [resume, setResume] = useState<Resume | null>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [resumeToDelete, setResumeToDelete] = useState<Resume | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [editForm, setEditForm] = useState({
         name: "",
@@ -81,7 +81,7 @@ export default function ProfilePage() {
             router.push("/signin");
         } else if (status === "authenticated") {
             fetchProfile();
-            fetchResumes();
+            fetchResume();
         }
     }, [status, router]);
 
@@ -108,15 +108,16 @@ export default function ProfilePage() {
         }
     };
 
-    const fetchResumes = async () => {
+    const fetchResume = async () => {
         try {
             const response = await fetch("/api/resume");
             if (response.ok) {
                 const data = await response.json();
-                setResumes(data.resumes || []);
+                // Since we're limiting to one resume, take the first one
+                setResume(data.resumes && data.resumes.length > 0 ? data.resumes[0] : null);
             }
         } catch (error) {
-            console.error("Error fetching resumes:", error);
+            console.error("Error fetching resume:", error);
         }
     };
 
@@ -155,10 +156,9 @@ export default function ProfilePage() {
             });
 
             if (response.ok) {
-                setResumes(resumes.filter(resume => resume.id !== resumeId));
+                setResume(null); // Clear the single resume
                 toast.success("Resume deleted successfully");
                 setDeleteDialogOpen(false);
-                setResumeToDelete(null);
             } else {
                 throw new Error("Failed to delete resume");
             }
@@ -170,8 +170,7 @@ export default function ProfilePage() {
         }
     };
 
-    const handleDeleteClick = (resume: Resume) => {
-        setResumeToDelete(resume);
+    const handleDeleteClick = () => {
         setDeleteDialogOpen(true);
     };
 
@@ -223,7 +222,7 @@ export default function ProfilePage() {
                         </TabsTrigger>
                         <TabsTrigger value="resumes" className="flex items-center gap-2">
                             <FileText className="h-4 w-4" />
-                            My Resumes
+                            My Resume
                         </TabsTrigger>
                     </TabsList>
 
@@ -465,70 +464,76 @@ export default function ProfilePage() {
                             <CardHeader>
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <CardTitle className="text-2xl">My Resumes</CardTitle>
+                                        <CardTitle className="text-2xl">My Resume</CardTitle>
                                         <CardDescription>
-                                            Manage your uploaded resumes and download them anytime
+                                            Manage your uploaded resume and access AI analysis
                                         </CardDescription>
                                     </div>
-                                    <Button onClick={() => router.push("/upload")}>
-                                        <Upload className="h-4 w-4 mr-2" />
-                                        Upload New Resume
-                                    </Button>
+                                    {!resume && (
+                                        <Button onClick={() => router.push("/upload")}>
+                                            <Upload className="h-4 w-4 mr-2" />
+                                            Upload Resume
+                                        </Button>
+                                    )}
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                {resumes.length === 0 ? (
+                                {!resume ? (
                                     <Alert>
                                         <FileText className="h-4 w-4" />
                                         <AlertDescription>
-                                            No resumes uploaded yet. Upload your first resume to get started with AI analysis.
+                                            No resume uploaded yet. Upload your resume to get started with AI analysis.
                                         </AlertDescription>
                                     </Alert>
                                 ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {resumes.map((resume) => (
-                                            <Card key={resume.id} className="hover:shadow-md transition-shadow">
-                                                <CardContent className="p-4">
-                                                    <div className="flex items-start justify-between">
-                                                        <div className="flex items-center space-x-3">
-                                                            <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                                                                <FileText className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                                                            </div>
-                                                            <div className="flex-1 min-w-0">
-                                                                <h4 className="font-semibold truncate">
-                                                                    {resume.title}
-                                                                </h4>
-                                                                <p className="text-sm text-muted-foreground">
-                                                                    Created {new Date(resume.createdAt).toLocaleDateString()}
-                                                                </p>
-                                                                <p className="text-sm text-muted-foreground">
-                                                                    Updated {new Date(resume.updatedAt).toLocaleDateString()}
-                                                                </p>
-                                                            </div>
-                                                        </div>
+                                    <Card className="hover:shadow-md transition-shadow">
+                                        <CardContent className="p-6">
+                                            <div className="flex items-start justify-between">
+                                                <div className="flex items-center space-x-4">
+                                                    <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                                                        <FileText className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                                                     </div>
-                                                    <div className="flex justify-between items-center mt-4">
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => router.push(`/dashboard/analyze/${resume.id}`)}
-                                                        >
-                                                            <Star className="h-4 w-4 mr-2" />
-                                                            Analyze
-                                                        </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleDeleteClick(resume)}
-                                                            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/50 border-red-200 hover:border-red-300 dark:border-red-800 dark:hover:border-red-700"
-                                                        >
-                                                            <Trash2 className="h-4 w-4" />
-                                                        </Button>
+                                                    <div className="flex-1">
+                                                        <h4 className="text-lg font-semibold">
+                                                            {resume.title}
+                                                        </h4>
+                                                        <p className="text-sm text-muted-foreground mt-1">
+                                                            Created {new Date(resume.createdAt).toLocaleDateString()}
+                                                        </p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            Updated {new Date(resume.updatedAt).toLocaleDateString()}
+                                                        </p>
                                                     </div>
-                                                </CardContent>
-                                            </Card>
-                                        ))}
-                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between items-center mt-6">
+                                                <div className="flex gap-3">
+                                                    <Button
+                                                        variant="default"
+                                                        onClick={() => router.push(`/dashboard/analyze/${resume.id}`)}
+                                                    >
+                                                        <Star className="h-4 w-4 mr-2" />
+                                                        Analyze Resume
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => router.push(`/dashboard/analytics?resumeId=${resume.id}`)}
+                                                    >
+                                                        <BarChart3 className="h-4 w-4 mr-2" />
+                                                        View Analytics
+                                                    </Button>
+                                                </div>
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={handleDeleteClick}
+                                                    className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/50 border-red-200 hover:border-red-300 dark:border-red-800 dark:hover:border-red-700"
+                                                >
+                                                    <Trash2 className="h-4 w-4 mr-2" />
+                                                    Delete Resume
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 )}
                             </CardContent>
                         </Card>
@@ -540,16 +545,15 @@ export default function ProfilePage() {
                     isOpen={deleteDialogOpen}
                     onClose={() => {
                         setDeleteDialogOpen(false);
-                        setResumeToDelete(null);
                     }}
                     onConfirm={() => {
-                        if (resumeToDelete) {
-                            handleDeleteResume(resumeToDelete.id);
+                        if (resume) {
+                            handleDeleteResume(resume.id);
                         }
                     }}
                     title="Delete Resume"
                     description="Are you sure you want to delete this resume? This action cannot be undone and will also remove all associated AI analysis data from our servers."
-                    itemName={resumeToDelete?.title}
+                    itemName={resume?.title}
                     isLoading={isDeleting}
                 />
             </div>
